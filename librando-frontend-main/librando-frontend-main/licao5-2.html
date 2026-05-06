@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <link rel="shortcut icon" type="image/x-icon" href="img/icone.png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Librando - Aprender Libras</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+Tamma+2:wght@400;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="css/estiloAtividades.css">
+  <style>
+    /* Estilo para garantir que o vídeo e a imagem tenham um comportamento base */
+    .letter-card video, .letter-card img {
+      display: block; /* Evita espaços extras */
+      margin: auto; /* Centraliza se o container for maior */
+      box-sizing: border-box; /* Garante que a borda não aumente o tamanho total */
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="progress-bar">
+      <div class="progress">
+        <div class="reflexo"></div>
+      </div>
+    </div>
+
+    <div class="main-content">
+      <div class="mascot-section">
+        <img src="img/liliSentada.png" alt="Mascote" class="elephant">
+        <div class="speech-bubble">Você consegue se lembrar?</div>
+      </div>
+
+      <h2>Qual letra esse sinal representa?</h2>
+
+      <div class="letter-card">
+        <img id="letterImage" class="container-zoom-permanente" src="" alt="Letra em Libras">
+      </div>
+    
+      <form class="form">
+          <input type="text" placeholder="Exemplo: A" class="input" />
+          <button type="submit" class="btn primary">Checar</button>
+          <div class="divider">
+            <span class="line"></span>
+            <span class="line"></span>
+          </div>
+      </form>
+    </div>
+
+    <div class="footer">
+      <p class="question">
+        COMO VOCÊ SE CHAMA?
+        <button id="finalbuton" class="arrow-btn" style="display: none;" onclick="window.location.href='licao5-3.html'">›</button>
+      </p>
+    </div>
+  </div>
+
+  <script>
+    const atividades = [
+        { imagem: 'gestos/u.mp4', resposta: 'u' },
+        { imagem: 'gestos/t.mp4', resposta: 't' },
+        { imagem: 'gestos/r.mp4', resposta: 'r' },
+        { imagem: 'gestos/s.mp4', resposta: 's' }
+    ];
+
+    let etapaAtual = 0;
+
+    const form = document.querySelector('.form');
+    const inputUsuario = document.querySelector('.input');
+    const botaoFinal = document.getElementById('finalbuton');
+    const imagemDaLetra = document.getElementById('letterImage');
+    const letterCard = document.querySelector('.letter-card');
+
+    function carregarAtividade() {
+        const atividade = atividades[etapaAtual];
+
+        const videoAntigo = letterCard.querySelector('video');
+        if (videoAntigo) {
+            videoAntigo.remove();
+        }
+
+        if (atividade.imagem.endsWith('.mp4')) {
+            imagemDaLetra.style.display = 'none';
+
+            const video = document.createElement('video');
+            video.src = atividade.imagem;
+            video.className = 'container-zoom-permanente';
+            video.autoplay = true;
+            video.loop = true;
+            video.muted = true;
+            video.playsInline = true;
+
+            video.style.width = '220px';
+            video.style.height = '220px';
+            video.style.borderRadius = '15px';
+            video.style.objectFit = 'cover';
+            
+            // --- LINHA ADICIONADA PARA A BORDA ---
+            video.style.border = '4px solid #75429E'; // A sua borda roxa!
+
+            letterCard.insertBefore(video, imagemDaLetra);
+
+        } else {
+            imagemDaLetra.style.display = 'block';
+            imagemDaLetra.src = atividade.imagem;
+        }
+
+        inputUsuario.value = '';
+    }
+
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const respostaCorreta = atividades[etapaAtual].resposta;
+        const textoDigitado = inputUsuario.value.trim().toLowerCase();
+
+        if (textoDigitado === respostaCorreta) {
+            alert('Você acertou!');
+            etapaAtual++;
+
+            if (etapaAtual >= atividades.length) {
+                alert('Parabéns, você completou todas as letras!');
+                form.style.display = 'none';
+                botaoFinal.style.display = 'inline-block';
+            } else {
+                carregarAtividade();
+            }
+        } else {
+            alert('Tente novamente!');
+        }
+    });
+
+    carregarAtividade();
+  </script>
+
+  <style>
+    .mascot-section { margin-bottom: -2%; }
+    .elephant { height: 35vh; }
+    .form { display: flex; flex-direction: column; gap: 1rem; }
+    .input { margin-top: 10%; padding: 0.7rem; border-radius: 10px; background-color: #efeff1; color: #6c55cc; font-weight: bold; font-size: 0.8rem; outline: 3px solid #6c55cc; border: none; box-shadow: none; }
+    .input::placeholder { color: #6c55cc; }
+    .btn { padding: 0.5rem; border: none; border-radius: 10px; font-weight: bold; font-size: 0.8rem; box-shadow: 4px 4px 0 #b0c4ff; cursor: pointer; }
+    .btn.primary { background-color: #6c55cc; color: white; }
+    .btn.secondary { background-color: #6c55cc; color: white; text-decoration: none; }
+  </style>
+</body>
+</html>

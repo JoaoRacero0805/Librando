@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Librando - Aprender Libras</title>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+Tamma+2:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/estiloAtividades.css">
+  <link rel="shortcut icon" type="image/x-icon" href="img/icone.png">
+  <script src="./js/config.js"></script>
+</head>
+<body>
+  <div class="container">
+    <div class="progress-bar">
+      <div class="progress">
+        <div class="reflexo"></div>
+      </div>
+    </div>
+
+    <div class="main-content">
+      <div class="mascot-section">
+        <img src="img/LiliSentada.png" alt="Mascote" class="elephant">
+        <div class="speech-bubble">Vamos aprender novos sinais?</div>
+      </div>
+
+      <h2>Conheça algumas letras:</h2>
+
+      <div class="letter-card">
+        <button id="prevButton" class="arrow-btn">‹</button>
+        <img id="letterImage" class="container-zoom-permanente" src="gestos/a.JPG" alt="Letra A">
+        <button id="nextButton" class="arrow-btn">›</button>
+      </div>
+      <p id="letterName" class="letter-name">"A"</p>
+    </div>
+
+    <div class="footer">
+      <p class="question">
+        COMO VOCÊ SE CHAMA?
+        <button id="finalbuton" class="arrow-btn" onclick="window.location.href='ordem.html'">›</button>
+      </p>
+    </div>
+  </div>
+
+  <script src="js/JsAtividadeR.js"></script>
+</body>
+</html>

@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lição 2 - Reordenar</title>
+  <link rel="shortcut icon" type="image/x-icon" href="img/icone.png">
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+Tamma+2:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container-geral">
+    
+    <div class="progress-bar">
+      <div class="progress">
+        <div class="reflexo"></div>
+      </div>
+    </div>
+
+    <div class="main-content">
+      
+      <div class="coluna-mascote">
+        <div class="elefanta-balao-container">
+          <img src="img/liliDuvida.png" alt="Elefanta" class="elefanta">
+          <div class="balloon">Você consegue se lembrar?</div>
+        </div>
+      </div>
+
+      <div class="coluna-jogo">
+        <h2>Reordene as letras para a ordem alfabética!</h2>
+        <div id="game"></div>
+        <div class="botoes-jogo">
+          <button class="button-jogo" onclick="checkOrder()">Verificar Ordem</button>
+          <button class="button-jogo" id="restartBtn" onclick="restart()">Reiniciar</button>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer">
+      <p class="question">
+        <span>COMO VOCÊ SE CHAMA?</span>
+        <button class="arrow-btn" id="nextBtn" onclick="alert('Agora pratique os sinais que você já aprendeu!'); proceed()">›
+          
+        </button>
+      </p>
+    </div>
+
+  </div>
+
+  <script>
+    // SEU JAVASCRIPT CONTINUA IGUAL AQUI
+    const correctOrder = [ "f.jpg", "g.jpg", "h.jpg", "i.jpg" ];
+    let currentOrder = [...correctOrder].sort(() => Math.random() - 0.5);
+    const game = document.getElementById("game");
+
+    function renderImages() {
+      game.innerHTML = "";
+      currentOrder.forEach((fileName, index) => {
+        const slot = document.createElement("div");
+        slot.className = "slot";
+        slot.dataset.index = index;
+        const img = document.createElement("img");
+        img.src = `img/${fileName}`;
+        img.draggable = true;
+        img.id = fileName;
+        img.addEventListener("dragstart", dragStart);
+        slot.addEventListener("dragover", dragOver);
+        slot.addEventListener("drop", drop);
+        slot.appendChild(img);
+        game.appendChild(slot);
+      });
+    }
+
+    let dragged;
+    function dragStart(e) { dragged = e.target; }
+    function dragOver(e) { e.preventDefault(); }
+    function drop(e) {
+      e.preventDefault();
+      if (e.target.tagName === "IMG") {
+        let tempSrc = e.target.src;
+        let tempId = e.target.id;
+        e.target.src = dragged.src;
+        e.target.id = dragged.id;
+        dragged.src = tempSrc;
+        dragged.id = tempId;
+      }
+    }
+
+    function checkOrder() {
+      const imgs = document.querySelectorAll(".slot img");
+      const order = Array.from(imgs).map(img => img.id);
+      if (JSON.stringify(order) === JSON.stringify(correctOrder)) {
+        document.getElementById("nextBtn").style.display = "flex";
+        document.getElementById("restartBtn").style.display = "none";
+        alert("Parabéns! Você acertou!");
+      } else {
+        document.getElementById("restartBtn").style.display = "inline-block";
+        document.getElementById("nextBtn").style.display = "none";
+        alert("Ordem incorreta. Tente novamente!");
+      }
+    }
+
+    function restart() {
+      currentOrder = [...correctOrder].sort(() => Math.random() - 0.5);
+      renderImages();
+      document.getElementById("restartBtn").style.display = "none";
+    }
+
+    function proceed() {
+      window.location.href = "https://librando-pi.vercel.app";
+    }
+
+    renderImages();
+  </script>
+</body>
+
+<style>
+  /* Reset e Estilos Base */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Baloo Tamma 2', sans-serif;
+  }
+
+  html, body {
+    height: 100%;
+    background-color: #FFFBFF;
+    color: #5a4d8a;
+    overflow: hidden; /* Impede a rolagem */
+  }
+
+  /* Container Geral Flexbox */
+  .container-geral {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 30px;
+    gap: 15px;
+  }
+
+  /* Barra de progresso */
+  .progress-bar {
+    border: 2px solid #75429E;
+    width: 100%;
+    height: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    flex-shrink: 0;
+  }
+  .progress { width: 33%; height: 100%; background-color: #75429E; border-radius: 10px; }
+  .reflexo { width: 96%; height: 10%; background-color: #E9EBFF; border-radius: 10px; margin-left: 2.5%; }
+
+  /* Conteúdo Principal */
+  .main-content {
+    flex-grow: 1;
+    position: relative; /* Contexto para o posicionamento absoluto da mascote */
+    display: flex;
+    align-items: center; /* Centraliza verticalmente o .coluna-jogo */
+    justify-content: center; /* Centraliza horizontalmente o .coluna-jogo */
+  }
+
+  /* Coluna da Esquerda (Mascote) */
+  .coluna-mascote {
+    /* POSICIONAMENTO ABSOLUTO NO CANTO SUPERIOR ESQUERDO */
+    position: absolute;
+    left: 20px; /* Distância fixa da borda esquerda */
+    top: 0; /* Alinha no topo do main-content */
+    z-index: 10;
+    transform: translateY(0); /* Remove o ajuste vertical que estava centralizando antes */
+  }
+  .elefanta-balao-container {
+    position: relative; /* Contexto para o balão */
+    display: flex; /* Para alinhar o balão ao lado da elefanta */
+    align-items: flex-start; /* Alinha a parte de cima da elefanta com o balão */
+    gap: 10px; /* Espaço entre a elefanta e o balão */
+  }
+  .elefanta {
+    width: clamp(150px, 15vw, 200px); /* Tamanho menor para a mascote no canto */
+    height: auto;
+    /* Remover margin-top se houver */
+  }
+  .balloon {
+    position: relative; /* Torna o balão relativo ao seu container (.elefanta-balao-container) */
+    top: 0; /* Alinha o balão com o topo da elefanta */
+    left: 0; /* Alinha o balão com a elefanta */
+    margin-left: 10px; /* Afasta um pouco do corpo da elefanta */
+    background: #e5edff;
+    padding: 0.4rem 1rem;
+    border-radius: 10px;
+    color: #6758C2;
+    font-weight: bold;
+    border: 2px solid #c2d3ff;
+    white-space: nowrap;
+    font-size: clamp(1rem, 1.2vw, 1.3rem);
+  }
+  .balloon::after { content: ""; position: absolute; left: -10px; top: 20%; transform: translateY(-50%); border-style: solid; border-width: 8px 10px 8px 0; border-color: transparent #e5edff transparent transparent; }
+  .balloon::before { content: ""; position: absolute; left: -13px; top: 20%; transform: translateY(-50%); border-style: solid; border-width: 10px 12px 10px 0; border-color: transparent #c2d3ff transparent transparent; }
+
+  /* Coluna da Direita (Jogo) */
+  .coluna-jogo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* Garante que o conteúdo do jogo esteja centralizado verticalmente dentro da sua coluna */
+    gap: 25px;
+  }
+  .coluna-jogo h2 {
+    color: #6758C2;
+    font-size: clamp(1.4rem, 2vw, 1.8rem);
+  }
+  #game {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+  }
+  .slot {
+    width: clamp(80px, 8vw, 100px);
+    height: clamp(80px, 8vw, 100px);
+    border: 2px dashed #6b4ce6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    border-radius: 8px;
+  }
+  .slot img {
+    width: 90%;
+    height: 90%;
+    cursor: grab;
+  }
+  .botoes-jogo {
+    display: flex;
+    gap: 15px;
+  }
+  .button-jogo {
+    color: white;
+    font-size: clamp(1rem, 1.5vw, 1.2rem);
+    padding: 8px 20px;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    background: #6758C2;
+  }
+  #restartBtn {
+    display: none; /* Começa escondido */
+  }
+
+  /* Rodapé */
+  .footer {
+    width: 100%;
+    flex-shrink: 0;
+  }
+  .question {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: clamp(1rem, 1.8vw, 1.4rem);
+    color: #afa5d4d8;
+    font-weight: bold;
+  }
+  .arrow-btn {
+  
+  background: #8b5cd6;
+  color: white;
+  font-size: clamp(1.5rem, 3vw, 1.75rem); /* Fonte responsiva */
+  border: none;
+  border-radius: 12px;
+  width: 45px;
+  height: 45px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  display: none;
+}
+
+.arrow-btn:hover {
+  background: #6c3dbb;
+}
+
+
+  /* Media Query para telas menores (mantém a mascote escondida) */
+  @media (max-width: 950px) {
+    .coluna-mascote {
+      display: none; /* Esconde a mascote em telas menores */
+    }
+    .coluna-jogo {
+      width: 100%; /* Ocupa a largura total quando a mascote está escondida */
+    }
+  }
+
+</style>
+</html>

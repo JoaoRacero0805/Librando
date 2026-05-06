@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <link rel="shortcut icon" type="image/x-icon" href="img/icone.png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Librando - Aprender Libras</title>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+Tamma+2:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <div class="progress-bar">
+      <div class="progress">
+        <div class="reflexo"></div>
+      </div>
+    </div>
+
+    <div class="main-content">
+      <div class="character">
+        <img src="img/LiliSentada.png" alt="Lili" class="lili">
+        <div class="balloon">Que tal praticar um pouco?</div>
+      </div>
+
+      <div class="centralizar">
+        <h2 class="indique">Indique qual dos sinais representa "Pode me ajudar?":</h2>
+        <div class="letter-card">
+          <video id="videoObg" src="gestos/teajudo.mp4" autoplay loop muted playsinline></video>
+          <video id="videoPfv" src="gestos/tdbem.mp4" autoplay loop muted playsinline></video>
+          <video id="imgOi" src="gestos/meajuda.mp4" autoplay loop muted playsinline></video>
+        </div>
+        <p id="letterName" class="letter-name">Selecione a opção correta</p>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p class="question">COMO VOCÊ SE CHAMA?</p>
+    </div>
+  </div>
+
+<div id="customModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2 style="font-style: bold;">Que pena, você errou</h2>
+        <img src="img/angry.gif" alt="Letra A" style="width:150px; display:block; margin:auto;">
+        <p style="font-weight: bold;">Este é o sinal de "Tudo bem?" em Libras.</p>
+    </div>
+</div>
+  
+</body>
+
+<style>
+  /* Reset e Estilos Base */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html, body {
+    height: 100%;
+    font-family: 'Baloo Tamma 2', cursive;
+    background-color: #FFFBFF;
+    color: #5a4d8a;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  /* Container Principal Flexbox */
+  .container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px 30px;
+    gap: 15px;
+  }
+
+  /* Barra de progresso (sem alterações) */
+  .progress-bar { border: 2px solid #75429E; width: 100%; height: 20px; background-color: #ffffff; border-radius: 10px; flex-shrink: 0; }
+  .progress { width: 66%; height: 100%; background-color: #75429E; border-radius: 10px; }
+  .reflexo { width: 95%; height: 10%; background-color: #E9EBFF; border-radius: 10px; margin-left: 2.5%; }
+
+  /* Conteúdo Principal (Mascote + Central) */
+  .main-content {
+    display: flex;
+    /* 1. VOLTAMOS A ALINHAR OS ITENS AO TOPO (PARA NÃO MEXER NA LILI) */
+    align-items: flex-start; 
+    justify-content: center;
+    gap: 3vw;
+    flex-grow: 1;
+    width: 100%;
+    max-width: 1300px;
+    margin: 0 auto;
+    padding-top: 30px;
+  }
+
+  /* Mascote e Balão */
+  .character {
+    position: relative;
+    flex-shrink: 0;
+    align-self: flex-start;
+  }
+
+  .lili {
+    width: clamp(140px, 15vw, 220px);
+    height: auto;
+  }
+  
+  .balloon {
+    position: absolute;
+    top: 0%;
+    left: 85%;
+    background: #e5edff;
+    padding: 0.5rem 1rem;
+    border-radius: 10px;
+    color: #6758C2;
+    font-weight: bold;
+    border: 2px solid #c2d3ff;
+    white-space: nowrap;
+    font-size: clamp(0.9rem, 1.5vw, 1.2rem);
+  }
+
+  .balloon::after { content: ""; position: absolute; left: -10px; top: 50%; transform: translateY(-50%); border-style: solid; border-width: 8px 10px 8px 0; border-color: transparent #e5edff transparent transparent; }
+  .balloon::before { content: ""; position: absolute; left: -13px; top: 50%; transform: translateY(-50%); border-style: solid; border-width: 10px 12px 10px 0; border-color: transparent #c2d3ff transparent transparent; }
+
+  /* Conteúdo Centralizado */
+  .centralizar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    flex-grow: 1;
+    /* 2. FAZEMOS O BLOCO CENTRAL SE ESTICAR PARA OCUPAR A ALTURA TODA */
+    align-self: stretch;
+  }
+
+  h2.indique { font-size: clamp(1.2rem, 2vw, 1.7rem); margin: 0; }
+
+  /* Card dos vídeos */
+  .letter-card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: clamp(15px, 2vw, 40px);
+    flex-wrap: wrap;
+  }
+  
+  .letter-card video {
+    width: clamp(150px, 18vw, 220px);
+    height: clamp(150px, 18vw, 220px);
+    object-fit: cover;
+    border-radius: 18px;
+    border: 5px solid #6c3dbb;
+    box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
+    cursor: pointer;
+  }
+  
+  .letter-name { font-weight: bold; font-size: clamp(1rem, 1.5vw, 1.2rem); margin: 0; }
+
+  /* Rodapé, Modal e Media Query (sem alterações) */
+  .footer { width: 100%; flex-shrink: 0; }
+  .question { font-size: clamp(1rem, 1.8vw, 1.4rem); color: #afa5d4d8; font-weight: bold; text-align: left; padding-left: 20px; }
+  .modal { display: none; position: fixed; z-index: 999; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); padding-top: 100px; }
+  .modal-content { background-color: #fff; margin: auto; padding: 20px; border-radius: 10px; width: 90%; max-width: 350px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+  .close { color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer; }
+  /* @media (max-width: 768px) or (max-height: 600px) {
+    .main-content { flex-direction: column; gap: 10px; justify-content: flex-start; padding-top: 10px; }
+    .character { margin-bottom: 25px; align-self: center; }
+    .lili { width: 120px; }
+    .balloon { top: -20px; left: 50%; transform: translateX(-50%); white-space: normal; width: 150px; font-size: 0.9rem; }
+    .balloon::after { left: 50%; top: 100%; transform: translateX(-50%) rotate(90deg); border-color: transparent transparent #e5edff transparent; }
+    .balloon::before { left: 50%; top: 100%; transform: translateX(-50%) rotate(90deg); border-color: transparent transparent #c2d3ff transparent; }
+    .letter-card video { width: clamp(120px, 25vw, 150px); height: clamp(120px, 25vw, 150px); }
+  } */
+
+</style>
+
+<script>
+  const customModal = document.getElementById("customModal");
+  const closeBtn = customModal.querySelector(".close");
+  const modalTitle = customModal.querySelector("h2");
+  const modalImg   = customModal.querySelector("img");
+  const modalText  = customModal.querySelector("p");
+
+  function abrirModal({ titulo, imagem, texto }) {
+    modalTitle.textContent = titulo;
+    modalImg.src = imagem;
+    modalText.textContent = texto;
+    customModal.style.display = "block";
+  }
+
+  // --- LÓGICA INVERTIDA ---
+
+  // Vídeo 1 (videoObg) AGORA É A RESPOSTA CORRETA
+  document.getElementById("videoObg").addEventListener("click", function () {
+    window.location.href = 'licao4-4.html';
+  });
+
+  // Vídeo 3 (imgOi) continua sendo uma resposta incorreta
+  document.getElementById("imgOi").addEventListener("click", function () {
+    abrirModal({
+      titulo: "Que pena, você errou",
+      imagem: "img/liliTriste.png",
+      texto: 'Este é o sinal para "Posso te ajudar?" em Libras.'
+    });
+  });
+  
+  // Vídeo 2 (videoPfv) AGORA É UMA RESPOSTA INCORRETA
+  document.getElementById("videoPfv").addEventListener("click", function () {
+    abrirModal({
+      titulo: "Que pena, você errou",
+      imagem: "img/angry.gif",
+      texto: 'Este é o sinal de "Tudo bem?" em Libras.'
+    });
+  });
+
+
+  // Lógica para fechar o modal (sem alteração)
+  closeBtn.addEventListener("click", function () {
+    customModal.style.display = "none";
+  });
+
+  window.addEventListener("click", function (event) {
+    if (event.target === customModal) {
+      customModal.style.display = "none";
+    }
+  });
+</script>
+</html>

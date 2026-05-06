@@ -1,0 +1,210 @@
+/* Reset e Estilos Globais */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* CHAVE PARA NÃO ROLAR: Define a altura total e desativa a rolagem */
+html, body {
+  height: 100%;
+  overflow: hidden; /* Impede a barra de rolagem */
+  font-family: 'Baloo Tamma 2', cursive;
+  background-color: #fdfdfd;
+  color: #5a4d8a;
+  text-align: center;
+}
+
+/* Container Principal com Flexbox */
+.container {
+  height: 100vh; /* Ocupa 100% da altura da janela de visualização */
+  display: flex;
+  flex-direction: column; /* Empilha os itens verticalmente */
+  padding: 20px;
+  gap: 15px; /* Espaçamento entre os elementos principais (barra, conteúdo, rodapé) */
+}
+
+/* Barra de progresso */
+.progress-bar {
+  border: 2px solid #75429E;
+  width: 100%;
+  height: 20px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  flex-shrink: 0; /* Impede que a barra de progresso encolha */
+}
+
+.progress {
+  width: 15%;
+  height: 100%;
+  background-color: #75429E;
+  border-radius: 10px;
+  transition: width 0.5s ease-in-out;
+}
+
+.reflexo {
+  width: 90%;
+  height: 10%;
+  background-color: #E9EBFF;
+  border-radius: 10px;
+  margin-left: 2.5%;
+}
+
+/* ÁREA PRINCIPAL: Ocupa o espaço restante */
+.main-content {
+  flex-grow: 1; /* Faz esta div esticar para preencher o espaço vertical disponível */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Centraliza o conteúdo (card, título) verticalmente */
+  align-items: center;   /* Centraliza o conteúdo horizontalmente */
+  width: 100%;
+}
+
+/* Mascote e fala */
+.mascot-section {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  align-self: flex-start; /* Alinha a mascote à esquerda dentro do container central */
+  position: relative; /* Essencial para o posicionamento do balão */
+  margin-bottom: 10px;
+}
+
+.elephant {
+    height: 28vh;
+    max-height: 167px;
+    width: auto;
+}
+
+.speech-bubble {
+  position: absolute;
+  /* Posicionamento relativo à mascote */
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-left: 15px; /* Espaço entre a mascote e o balão */
+
+  background: #e5edff;
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  color: #6758C2;
+  font-weight: bold;
+  border: 2px solid #c2d3ff;
+  white-space: nowrap;
+  /* Usando clamp para uma fonte responsiva e legível */
+  font-size: clamp(1rem, 2vw, 1.2rem);
+}
+
+.speech-bubble::after, .speech-bubble::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
+}
+
+.speech-bubble::after {
+  left: -10px;
+  border-style: solid;
+  border-width: 8px 10px 8px 0;
+  border-color: transparent #e5edff transparent transparent;
+}
+
+.speech-bubble::before {
+  left: -13px;
+  border-style: solid;
+  border-width: 10px 12px 10px 0;
+  border-color: transparent #c2d3ff transparent transparent;
+}
+
+/* Título */
+h2 {
+  margin: 10px 0;
+  font-size: clamp(1.5rem, 3vw, 1.75rem); /* Fonte responsiva */
+}
+
+/* Card da letra */
+.letter-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+.letter-card img {
+  /* Tamanho relativo à altura da tela, com limites */
+  width: 30vh;
+  height: 30vh;
+  max-width: 220px;
+  max-height: 220px;
+  
+  object-fit: cover;
+  border-radius: 15px;
+  border: 4px solid #75429E;
+  box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
+}
+
+.arrow-btn {
+  background: #8b5cd6;
+  color: white;
+  font-size: clamp(1.5rem, 3vw, 1.75rem); /* Fonte responsiva */
+  border: none;
+  border-radius: 12px;
+  width: 45px;
+  height: 45px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.arrow-btn:hover {
+  background: #6c3dbb;
+}
+
+.letter-name {
+  margin-top: 10px;
+  font-weight: bold;
+  font-size: clamp(1rem, 2.5vw, 1.2rem); /* Fonte responsiva */
+}
+
+/* Rodapé */
+.footer {
+  width: 100%;
+  flex-shrink: 0; /* Impede que o rodapé encolha */
+}
+
+.question {
+  display: flex;
+  justify-content: space-between; /* Centraliza o conteúdo do rodapé */
+  align-items: center;
+  gap: 10%; /* Espaço entre o texto e o botão */
+  font-size: clamp(1rem, 2.5vw, 1.25rem); /* Fonte responsiva */
+  color: #afa5d4d8;
+  font-weight: bold;
+  margin: 0; /* Remove margens antigas */
+  padding: 0; /* Remove paddings antigos */
+}
+
+
+
+
+/* Estilos de transição e botões desabilitados (sem alteração) */
+.fade-text {
+  transition: opacity 0.4s ease-in-out;
+  opacity: 1;
+}
+
+.fade-out {
+  opacity: 0;
+}
+
+#prevButton:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+#finalbuton {
+  display: none; /* Oculto até a barra completar */
+}

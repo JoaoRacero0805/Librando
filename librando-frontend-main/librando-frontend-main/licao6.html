@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Librando - Aprender Libras</title>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+Tamma+2:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/estiloAtividades.css">
+  <link rel="shortcut icon" type="image/x-icon" href="img/icone.png">
+</head>
+<body>
+  <div class="container">
+    <div class="progress-bar">
+      <div class="progress">
+        <div class="reflexo"></div>
+      </div>
+    </div>
+
+    <div class="main-content">
+      <div class="mascot-section">
+        <img src="img/LiliSentada.png" alt="Mascote" class="elephant">
+        <div class="speech-bubble">Vamos aprender novos sinais?</div>
+      </div>
+
+      <h2>Conheça algumas letras:</h2>
+
+      <div class="letter-card">
+        <button id="prevButton" class="arrow-btn">‹</button>
+        <img id="letterImage" class="container-zoom-permanente" src="gestos/a.JPG" alt="Letra A">
+        <button id="nextButton" class="arrow-btn">›</button>
+      </div>
+      <p id="letterName" class="letter-name">"A"</p>
+    </div>
+
+    <div class="footer">
+      <p class="question">
+        COMO VOCÊ SE CHAMA?
+        <button id="finalbuton" class="arrow-btn" onclick="window.location.href='licao6-2.html'">›</button>
+      </p>
+    </div>
+  </div>
+
+  <script>
+  
+  // === Dados ===
+const letters = [
+  { letter: 'W', img: 'gestos/w.mp4', name: "'W'" },
+  { letter: 'X', img: 'gestos/x.mp4', name: "'X'" },
+  { letter: 'Y', img: 'gestos/y.mp4', name: "'Y'" },
+  { letter: 'Z', img: 'gestos/z.mp4', name: "'Z'" },
+  { letter: 'OI', img: 'gestos/deond.mp4', name: 'De onde você é?' },
+  { letter: 'Tchau', img: 'gestos/soude.mp4', name: "'Sou de Franca.'" },
+  { letter: 'Sim', img: 'gestos/qntsanos.mp4', name: "'Quantos anos você tem?'" },
+  { letter: 'Nao', img: 'gestos/ten17.mp4', name: "'Eu tenho 17 anos.'" },
+];
+
+let currentIndex = 0;
+let reachedOi = false;
+
+// === Elementos ===
+const letterImage = document.getElementById('letterImage');
+const letterName = document.getElementById('letterName');
+const nextButton = document.getElementById('nextButton');
+const prevButton = document.getElementById('prevButton');
+const progressBar = document.querySelector('.progress');
+const letterCard = document.querySelector('.letter-card');
+const repeatButton = document.getElementById('repeatButton'); // NOVO
+
+// Textos dinâmicos
+const speech = document.querySelector('.speech-bubble');
+const titleEl = document.querySelector('h2');
+const questionEl = document.querySelector('.question');
+
+const defaultSpeech = speech ? speech.textContent : '';
+const defaultTitle = titleEl ? titleEl.textContent : '';
+const questionTextNode = questionEl
+  ? Array.from(questionEl.childNodes).find(n => n.nodeType === Node.TEXT_NODE)
+  : null;
+const defaultQuestion = questionTextNode ? questionTextNode.textContent.trim() : '';
+
+const oiTexts = {
+  speech: 'Agora vamos aprender como cumprimentar e se comunicar com gentileza em Libras?',
+  title: 'Conheça alguns sinais essenciais:',
+  question: 'SINAIS BÁSICOS',
+};
+
+// Aplica os textos
+function applyTexts() {
+  const elements = [
+    { el: speech, newText: reachedOi ? oiTexts.speech : defaultSpeech },
+    { el: titleEl, newText: reachedOi ? oiTexts.title : defaultTitle },
+    { el: questionTextNode, newText: reachedOi ? oiTexts.question + ' ' : defaultQuestion + ' ' },
+  ];
+
+  elements.forEach(item => {
+    if (!item.el) return;
+
+    if (item.el.nodeType === Node.TEXT_NODE) {
+      const parent = item.el.parentElement;
+      parent.classList.add('fade-text', 'fade-out');
+      setTimeout(() => {
+        item.el.textContent = item.newText;
+        parent.classList.remove('fade-out');
+      }, 400);
+    } else {
+      item.el.classList.add('fade-text', 'fade-out');
+      setTimeout(() => {
+        item.el.textContent = item.newText;
+        item.el.classList.remove('fade-out');
+      }, 400);
+    }
+  });
+}
+
+// Atualiza o card
+function updateStep() {
+  const item = letters[currentIndex];
+
+  // Remove vídeo antigo
+  const oldVideo = document.getElementById('letterVideo');
+  if (oldVideo) oldVideo.remove();
+
+  if (item.img.endsWith('.mp4') || item.img.endsWith('.webm')) {
+    letterImage.style.display = 'none';
+
+    const video = document.createElement('video');
+    video.id = 'letterVideo';
+    video.src = item.img;
+    video.autoplay = true;
+    video.loop = true;
+    video.muted = true;
+    video.playsInline = true;
+    video.style.width = '220px';
+    video.style.height = '220px';
+    video.style.borderRadius = '15px';
+    video.style.objectFit = 'cover';
+    video.style.boxShadow = '0px 4px 8px rgba(0,0,0,0.1)';
+    video.style.border = '4px solid #75429E';
+
+    letterCard.insertBefore(video, nextButton);
+  } else {
+    letterImage.style.display = 'block';
+    letterImage.src = item.img;
+  }
+
+  if (letterName) letterName.textContent = item.name;
+  if (progressBar) progressBar.style.width = ((currentIndex + 1) / letters.length) * 100 + '%';
+
+  // Atualiza textos dinâmicos
+  reachedOi = letters.slice(0, currentIndex + 1).some(l => (l.letter || '').toLowerCase() === 'oi');
+  applyTexts();
+
+  // Mostrar botão final
+  const finalButton = document.getElementById('finalbuton');
+  if (finalButton) {
+    finalButton.style.display = currentIndex === letters.length - 1 ? 'inline-block' : 'none';
+  }
+}
+
+// === Eventos ===
+// Botão próximo
+nextButton?.addEventListener('click', () => {
+  if (currentIndex < letters.length - 1) {
+    currentIndex++;
+    updateStep();
+  } else {
+    updateStep();
+  }
+});
+
+// Botão voltar
+prevButton?.addEventListener('click', () => {
+  if (currentIndex > 0) {
+    currentIndex--;
+    updateStep();
+  }
+});
+
+// Botão repetir
+repeatButton?.addEventListener('click', () => {
+  const video = document.getElementById('letterVideo');
+  if (video) {
+    video.currentTime = 0;
+    video.play();
+  }
+});
+
+// Navegação por teclado
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight') nextButton?.click();
+  if (e.key === 'ArrowLeft') prevButton?.click();
+});
+
+// Clique no card (avançar)
+letterCard?.addEventListener('click', e => {
+  if (e.target.tagName !== 'BUTTON') nextButton?.click();
+});
+
+// Inicializa
+updateStep();
+
+  
+  </script>
+
+</body>
+</html>

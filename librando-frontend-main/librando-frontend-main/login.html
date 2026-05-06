@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <link rel="shortcut icon" type="image/x-icon" href="img/icone.png" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Librando - Login</title>
+    <link rel="stylesheet" href="css/css_entrar_librando.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Baloo+Tamma+2:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="./js/config.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="logo">Librando</h1>
+      <h2 class="subtitle">Entrar em conta existente</h2>
+
+      <form class="form" id="loginForm">
+        <input type="email" name="email" placeholder="Email" class="input" required />
+        <input type="password" name="password" placeholder="Senha" class="input" required />
+
+        <button type="submit" class="btn primary">ENTRAR</button>
+
+        <div class="divider">
+          <span class="line"></span>
+          <span class="or">ou</span>
+          <span class="line"></span>
+        </div>
+
+        <a href="cadastro.html" class="btn secondary">Criar nova conta</a>
+      </form>
+    </div>
+    <script src="./js/config.js"></script>
+    <script>
+      document.getElementById('loginForm').addEventListener('submit', async e => {
+        e.preventDefault();
+
+        const email = e.target.email.value.trim();
+        const password = e.target.password.value.trim();
+        const url = `${CONFIG.URL}`
+
+        try {
+          const response = await fetch(`${url}/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password }),
+          });
+
+          const res = await response.json();
+
+          if (response.ok) {
+            alert('Login realizado com sucesso!');
+            console.log(res);
+            localStorage.setItem('id', res.data.id); 
+            window.location.href = 'caminho.html';
+          } else {
+            alert(res.message || 'Email ou senha incorretos!');
+          }
+        } catch (error) {
+          console.error(error);
+          alert('Erro na conexão com o servidor.');
+        }
+      });
+    </script>
+  </body>
+</html>

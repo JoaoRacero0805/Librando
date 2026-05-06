@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+ <meta name="HandheldFriendly" content="true">
+<meta name="MobileOptimized" content="width">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
+  <title>Librando</title>
+  <link rel="shortcut icon" type="image/x-icon" href="img/icone.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2&display=swap" rel="stylesheet">
+  <script src="./js/config.js"></script>
+</head>
+
+<body>
+  <header>
+    <h1><strong>Librando</strong> | Módulo 1 - Soletrando: 1ª lição</h1>
+
+    <div class="allOfen">
+      <img src="img/fire.png" class="ofensive">
+      <span class="daysOfensive"></span>
+    </div>
+
+
+
+    <div class="menu-hamburguer" id="menuBtn">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <div class="menu-opcoes" id="menuOpcoes">
+      <a onclick="alert('Precisa de ajuda? Entre em contato com nosso suporte: librando.tcc@gmail.com')">Ajuda</a>
+      <a href="index.html">Sair</a>
+    </div>
+  </header>
+
+  <a href="guia.html" class="guide-btn">
+    <img src="img/book.png" class="bookimg">
+    <span class="guide">Guia</span>
+  </a>
+
+  <div class="content">
+    <div class="character">
+      <img src="img/lili.png" alt="Lili">
+      <div class="balloon">Bem-vindo ao Librando!</div>
+    </div>
+
+    <div class="map-container">
+      <div class="pat">
+        <svg class="map-path" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"></svg>
+
+        <div class="button-container one">
+          <button onclick="window.location.href='atividades.html'" class="button" id="0">
+            <div class="icon-container">
+              <img class="icon-custom" src="img/botao.png" alt="">
+            </div>
+          </button>
+        </div>
+
+        <div class="button-container two">
+          <button onclick="window.location.href='licao2.html'" class="button" id="1">
+            <div class="icon-container">
+              <img class="icon-custom" src="img/botao.png" alt="">
+            </div>
+          </button>
+        </div>
+
+        <div class="button-container three">
+          <button onclick="window.location.href='licao3.html'" class="button" id="2">
+            <div class="icon-container">
+              <img class="icon-custom" src="img/botao.png" alt="">
+            </div>
+          </button>
+        </div>
+
+        <div class="button-container four">
+          <button onclick="window.location.href='licao4.html'" class="button" id="3">
+            <div class="icon-container">
+              <img class="icon-custom" src="img/botao.png" alt="">
+            </div>
+          </button>
+        </div>
+
+        <div class="button-container five">
+          <button onclick="window.location.href='licao5.html'" class="button" id="4">
+            <div class="icon-container">
+              <img class="icon-custom" src="img/botao.png" alt="">
+            </div>
+          </button>
+        </div>
+
+        <div class="button-container six">
+          <button onclick="window.location.href='licao6.html'" class="button" id="5">
+            <div class="icon-container">
+              <img class="icon-custom" src="img/botao.png" alt="">
+            </div>
+          </button>
+        </div>
+
+        <div class="button-container seven">
+          <button onclick="window.location.href='quiz.html'" class="button" id="6">
+            <div class="icon-container">
+              <img class="icon-custom" src="img/trophy.png" alt="">
+            </div>
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="next-balloon">Próximo módulo em desenvolvimento.</div>
+    <button class="next-btn"
+      onclick="alert('O próximo módulo ainda está em desenvolvimento. Avisaremos quando estiver disponível.');">
+      <img src="img/nextbtn.png" alt="Próximo módulo">
+    </button>
+  </div>
+
+  <button class="back-btn">
+    <img src="img/backbtn.png" onclick="alert('Você já está no primeiro módulo!');">
+  </button>
+
+  <!-- Script externo -->
+  <script type="module" src="js/caminho.js" defer></script>
+
+
+
+  <div vw class="enabled">
+    <div vw-access-button class="active"></div>
+    <div vw-plugin-wrapper>
+      <div class="vw-plugin-top-wrapper"></div>
+    </div>
+  </div>
+  <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+  <script>
+    new window.VLibras.Widget('https://vlibras.gov.br/app');
+  </script>
+
+
+</body>
+
+
+
+
+
+</html>

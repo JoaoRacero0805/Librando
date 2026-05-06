@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lição 1</title>
+    <link rel="shortcut icon" type="image/x-icon" href="img/icone.png" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Baloo+Tamma+2:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      #game {
+        display: flex;
+        flex-wrap: wrap; /* Permite que os itens quebrem para a próxima linha */
+        justify-content: center; /* Centraliza os itens */
+        gap: 10px; /* Adiciona um espaço entre as imagens */
+      }
+    </style>
+    <script src="./js/config.js"></script>
+  </head>
+  <body>
+    <div class="page-wrapper">
+      <header class="page-header">
+        <div class="progress-bar">
+          <div class="progress">
+            <div class="reflexo"></div>
+          </div>
+        </div>
+      </header>
+
+      <main class="main-content">
+        <!-- <div class="mascot-container">
+          <img src="img/liliDuvida.png" alt="Elefanta" class="mascot-image" />
+          <div class="speech-bubble">Você consegue se lembrar?</div>
+        </div> -->
+
+        <h2>Reordene as letras para a ordem alfabética!</h2>
+
+        <div id="game"></div>
+
+        <div class="button-group">
+          <button class="game-button" onclick="checkOrder()">Verificar Ordem</button>
+          <button class="game-button" id="restartBtn" onclick="restart()">Reiniciar</button>
+        </div>
+      </main>
+
+      <footer class="page-footer">
+        <p class="question">
+          <span>ALFABETO EM LIBRAS</span>
+          <button class="arrow-btn" id="nextBtn" onclick="proceed()">›</button>
+        </p>
+      </footer>
+    </div>
+    <script>
+      const userId = localStorage.getItem('id');
+
+      // --- MODIFICAÇÃO PRINCIPAL AQUI ---
+      // Lógica ajustada para usar .jpeg para a-e e .jpg para o restante
+      const alphabet = 'abcdefghijklmnopqrstuvwxyz'.split('');
+      const correctOrder = alphabet.map(letter => (letter <= 'e') ? `${letter}.jpeg` : `${letter}.jpg`);
+      
+      let currentOrder = [...correctOrder].sort(() => Math.random() - 0.5);
+      const game = document.getElementById('game');
+
+      function renderImages() {
+        game.innerHTML = '';
+        currentOrder.forEach((fileName, index) => {
+          const slot = document.createElement('div');
+          slot.className = 'slot';
+          slot.dataset.index = index;
+          const img = document.createElement('img');
+          img.src = `img/${fileName}`;
+          img.draggable = true;
+          img.id = fileName;
+          img.addEventListener('dragstart', dragStart);
+          slot.addEventListener('dragover', dragOver);
+          slot.addEventListener('drop', drop);
+          slot.appendChild(img);
+          game.appendChild(slot);
+        });
+      }
+
+      let dragged;
+      function dragStart(e) { dragged = e.target; }
+      function dragOver(e) { e.preventDefault(); }
+      function drop(e) {
+        e.preventDefault();
+        if (e.target.tagName === 'IMG') {
+          let tempSrc = e.target.src;
+          e.target.src = dragged.src;
+          dragged.src = tempSrc;
+          let tempId = e.target.id;
+          e.target.id = dragged.id;
+          dragged.id = tempId;
+        }
+      }
+
+      async function checkOrder() {
+        const imgs = document.querySelectorAll('.slot img');
+        const order = Array.from(imgs).map(img => img.id);
+        const url = `${CONFIG.URL}`
+
+        if (JSON.stringify(order) === JSON.stringify(correctOrder)) {
+          alert('Parabéns, ordem correta.'); 
+          document.getElementById('nextBtn').style.display = 'flex';
+          document.getElementById('restartBtn').style.display = 'none';
+
+          try {
+            const response = await fetch(`${url}/user/${userId}/quest`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ key: 0, value: true }), 
+            });
+
+            const text = await response.json();
+            console.log('Resposta do servidor:', text);
+
+            if (!response.ok) {
+              throw new Error(`Erro HTTP ${response.status}: ${text}`);
+            }
+          } catch (err) {
+            console.error('Falha no fetch:', err);
+          }
+        } else {
+          document.getElementById('restartBtn').style.display = 'inline-block';
+          document.getElementById('nextBtn').style.display = 'none';
+          alert('Ordem incorreta. Tente novamente!');
+        }
+      }
+
+      function restart() {
+        currentOrder = [...correctOrder].sort(() => Math.random() - 0.5);
+        renderImages();
+        document.getElementById('restartBtn').style.display = 'none';
+      }
+
+      function proceed() {
+        window.location.href = 'escolha.html';
+      }
+
+      renderImages();
+    </script>
+  </body>
+
+
+
+<style>
+
+  /* --- RESET E ESTILOS GLOBAIS --- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden; /* A regra mais importante para evitar a rolagem */
+  font-family: 'Baloo Tamma 2', cursive;
+  background-color: #FFFBFF;
+  color: #5a4d8a;
+}
+
+/* --- ESTRUTURA PRINCIPAL DA PÁGINA --- */
+.page-wrapper {
+  display: flex;
+  flex-direction: column; /* Empilha: header, main, footer */
+  height: 100vh; /* Ocupa a altura total da tela */
+  padding: 20px;
+}
+
+.page-header, .page-footer {
+  flex-shrink: 0; /* Impede que o header e o footer encolham */
+  width: 100%;
+}
+
+.main-content {
+  flex-grow: 1; /* Faz o conteúdo principal esticar e ocupar o espaço livre */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centraliza tudo horizontalmente */
+  justify-content: center; /* Centraliza tudo verticalmente */
+  gap: 40px; /* Espaçamento entre os elementos do conteúdo */
+  text-align: center;
+}
+
+/* --- CABEÇALHO (BARRA DE PROGRESSO) --- */
+.progress-bar {
+  border: 2px solid #75429E;
+  width: 100%;
+  height: 20px;
+  background-color: #ffffff;
+  border-radius: 10px;
+
+}
+
+.progress {
+  width: 100%;
+  height: 100%;
+  background-color: #75429E;
+  border-radius: 10px;
+  transition: width 0.5s ease-in-out;
+}
+
+.reflexo {
+  width: 96%;
+  height: 10%;
+  background-color: #E9EBFF;
+  border-radius: 10px;
+  margin-left: 2.5%;
+}
+
+/* --- CONTEÚDO PRINCIPAL (TÍTULO, MASCOTE, JOGO, BOTÕES) --- */
+h2 {
+  color: #6758C2;
+  font-size: clamp(1.5rem, 3vw, 1.8rem); /* Fonte responsiva */
+}
+
+.mascot-container {
+  display: flex;
+  align-items: center;
+  align-self: flex-start; /* Alinha o container da mascote à esquerda */
+  position: relative; /* Contexto para o balão de fala */
+}
+
+.mascot-image {
+  height: 28vh; /* Tamanho relativo à altura da tela */
+  max-height: 250px; /* Limite máximo */
+  width: auto;
+}
+
+.speech-bubble {
+  position: absolute;
+  left: 100%;
+  top: 40%;
+  transform: translateY(-50%);
+  margin-left: 15px;
+  background: #e5edff;
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  color: #6758C2;
+  font-weight: bold;
+  border: 2px solid #c2d3ff;
+  white-space: nowrap;
+  font-size: clamp(1rem, 2vw, 1.2rem);
+}
+
+.speech-bubble::before, .speech-bubble::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  border-style: solid;
+}
+.speech-bubble::before {
+  left: -13px;
+  border-width: 10px 12px 10px 0;
+  border-color: transparent #c2d3ff transparent transparent;
+}
+.speech-bubble::after {
+  left: -10px;
+  border-width: 8px 10px 8px 0;
+  border-color: transparent #e5edff transparent transparent;
+}
+
+
+/* --- ÁREA DO JOGO (DRAG AND DROP) --- */
+#game {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap; /* Permite que os itens quebrem a linha em telas menores */
+}
+
+.slot {
+  width: 100px;
+  height: 100px;
+  border: 2px dashed #6b4ce6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  border-radius: 8px;
+}
+
+.slot img {
+  width: 90px;
+  height: 90px;
+  cursor: grab;
+}
+
+.button-group {
+  display: flex;
+  gap: 15px;
+}
+
+.game-button {
+  color: white;
+  font-size: 1.2rem;
+  padding: 8px 20px;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  background: #6758C2;
+  font-family: 'Baloo Tamma 2', cursive;
+}
+.game-button:hover {
+  background-color: #5a4d8a;
+}
+
+#restartBtn {
+  display: none; /* Inicia escondido */
+}
+
+
+/* --- RODAPÉ --- */
+.page-footer {
+  padding-top: 15px; /* Espaço para não colar no conteúdo */
+}
+
+.question {
+  display: flex;
+  justify-content: space-between; /* Coloca um item na esquerda e outro na direita */
+  align-items: center;
+  font-size: 1.2rem;
+  color: #c5c5c5;
+  font-weight: bold;
+}
+
+ /* .arrow-btn {
+  display: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  width: 50px;
+  height: 50px;
+  align-items: center;
+  justify-content: center;
+}
+
+.arrow-btn img {
+  width: 100%;
+  height: auto;
+} */ 
+
+.arrow-btn {
+  
+  background: #8b5cd6;
+  color: white;
+  font-size: clamp(1.5rem, 3vw, 1.75rem); /* Fonte responsiva */
+  border: none;
+  border-radius: 12px;
+  width: 45px;
+  height: 45px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  display: none;
+}
+
+.arrow-btn:hover {
+  background: #6c3dbb;
+}
+
+.page-header {
+  margin-bottom: 50px; /* Ajuste o valor 30px como preferir */
+}
+  
+</style>
+
+  </html>

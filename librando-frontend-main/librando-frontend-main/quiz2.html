@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/x-icon" href="img/icone.png">
+    <title>Librando - Quiz Final</title>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+Tamma+2:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* O CSS permanece o mesmo da versão anterior */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body {
+            height: 100%;
+            font-family: 'Baloo Tamma 2', cursive;
+            background-color: #FFFBFF;
+            color: #5a4d8a;
+            text-align: center;
+            overflow: hidden;
+        }
+        .container {
+            height: 100%; 
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 20px 30px;
+        }
+        .progress-bar {
+            border: 2px solid #75429E;
+            width: 100%;
+            height: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            flex-shrink: 0;
+            margin-bottom: 20px;
+        }
+        .progress { width: 0%; height: 100%; background-color: #75429E; border-radius: 10px; transition: width 0.5s ease-in-out; }
+        .main-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            width: 100%;
+        }
+        h2.quiz-question { 
+            font-size: clamp(1.5rem, 2.5vw, 2rem);
+            font-weight: 700; 
+            margin-bottom: 20px;
+            flex-shrink: 0;
+        }
+        .footer { width: 100%; text-align: left; color: #afa5d4d8; font-weight: bold; flex-shrink: 0; padding-top: 10px; }
+        #quiz-container { 
+            width: 100%; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center;
+            flex-grow: 1;
+            justify-content: center;
+        }
+        #results-container { display: none; text-align: center; }
+        #results-container h1 { font-size: 2.5rem; margin-bottom: 20px; }
+        #results-container p { font-size: 1.5rem; margin: 10px 0; }
+        .score { color: #4CAF50; }
+        .errors { color: #F44336; }
+        .video-options { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+        .video-options video {
+            width: clamp(150px, 18vw, 220px); height: clamp(150px, 18vw, 220px);
+            object-fit: cover; border-radius: 18px; border: 5px solid #6c3dbb;
+            box-shadow: 0px 4px 8px rgba(0,0,0,0.1); cursor: pointer;
+        }
+        .input-question .media-container { width: clamp(200px, 25vw, 250px); height: clamp(200px, 25vw, 250px); margin: 0 auto 20px auto; }
+        .input-question .media-container video { width: 100%; height: 100%; object-fit: cover; border-radius: 18px; border: 5px solid #6c3dbb; }
+        .input-form { display: flex; flex-direction: column; gap: 1rem; align-items: center; }
+        .input-form input { padding: 0.7rem; border-radius: 10px; background-color: #efeff1; color: #6c55cc; font-weight: bold; font-size: 1rem; outline: 3px solid #6c55cc; border: none; text-align: center; text-transform: uppercase; width: 100px; }
+        .input-form button { background-color: #75429E; color: white; border: none; border-radius: 8px; padding: 10px 25px; font-family: 'Baloo Tamma 2', cursive; font-size: 1rem; font-weight: 700; cursor: pointer; }
+        .order-question { display: flex; flex-direction: column; align-items: center; gap: 15px; }
+        .order-question #game {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .order-question .slot {
+            width: 85px; 
+            height: 85px; 
+            border: 2px dashed #6b4ce6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border-radius: 8px;
+        }
+        .order-question .slot img {
+            width: 75px; 
+            height: 75px; 
+            cursor: grab;
+        }
+        .order-question #verify-order-btn {
+            color: white;
+            font-size: 1.1rem;
+            padding: 8px 20px;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            background: #6758C2;
+            font-family: 'Baloo Tamma 2', cursive;
+            flex-shrink: 0;
+        }
+        .order-question #verify-order-btn:hover { background-color: #5a4d8a; }
+
+        .lili {
+            width: 250px;
+            height: auto;
+        }
+
+     .quiz-button {
+      background-color: #75429E;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 8px 25px;
+      font-family: 'Baloo Tamma 2', cursive;
+      font-size: clamp(1rem, 1.5vw, 1.2rem);
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+      transition: background-color 0.3s ease;
+
+      /* --- NOVAS LINHAS PARA POSICIONAMENTO --- */
+      position: fixed; /* Fixa o botão na tela */
+      bottom: 20px;    /* 20px de distância da parte inferior */
+      right: 30px;      /* 20px de distância da parte esquerda */
+ }
+
+ .quiz-button:hover {
+      background-color: #5f3580;
+ }
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="progress-bar">
+                <div id="progress" class="progress"></div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div id="quiz-container">
+                <h2 id="question-title" class="quiz-question"></h2>
+                <div id="question-content"></div>
+            </div>
+
+            <div id="results-container">
+                <h1>Quiz Finalizado!</h1>
+                <p>Aqui está o seu desempenho:</p>
+                <p class="score">Acertos: <span id="score-count">0</span></p>
+                <p class="errors">Erros: <span id="error-count">0</span></p>
+                <p>Se possível, revise o guia do módulo atual antes de avançar para o próximo.</p> 
+           <img src="img/doida.gif" class="lili">
+           <button class="quiz-button" onclick="window.location.href='caminho.html'">Voltar</button>
+            </div>
+
+        
+
+        </main>
+
+        <footer class="footer">
+            <p>QUIZ FINAL</p>
+        </footer>
+    </div>
+
+    <script>
+        const quizData = [
+            {
+                type: 'choice',
+                question: 'Indique o sinal de "Obrigado(a)":',
+                options: [
+                    { src: 'gestos/pfv.mp4', isCorrect: false },
+                    { src: 'gestos/oi2.mp4', isCorrect: false },
+                    { src: 'gestos/obg.mp4', isCorrect: true }
+                ]
+            },
+            {
+                type: 'choice',
+                question: 'Indique o sinal de "Pai":',
+                options: [
+                    { src: 'gestos/pai.mp4', isCorrect: true },
+                    { src: 'gestos/irmao.mp4', isCorrect: false },
+                    { src: 'gestos/mae.mp4', isCorrect: false }
+                ]
+            },
+            {
+                type: 'choice',
+                question: 'Indique o sinal de "Qual seu nome?":',
+                options: [
+                    { src: 'gestos/meunome.mp4', isCorrect: false },
+                    { src: 'gestos/seunome.mp4', isCorrect: true },
+                    { src: 'gestos/prazer.mp4', isCorrect: false }
+                ]
+            },
+            // --- MAIS PERGUNTAS ADICIONADAS ---
+            {
+                type: 'choice',
+                question: 'Indique o sinal de "Pode me ajudar?":',
+                options: [
+                    { src: 'gestos/teajudo.mp4', isCorrect: true },
+                    { src: 'gestos/meajuda.mp4', isCorrect: false },
+                    { src: 'gestos/tdbem.mp4', isCorrect: false }
+                ]
+            },
+            {
+                type: 'choice',
+                question: 'Indique o sinal de "Andar":',
+                options: [
+                    { src: 'gestos/escola.mp4', isCorrect: false },
+                    { src: 'gestos/andar.mp4', isCorrect: true },
+                    { src: 'gestos/comer.mp4', isCorrect: false }
+                ]
+            },
+            // ------------------------------------
+            { 
+                type: 'choice', 
+                question: 'Indique o sinal de "De onde você é?":', 
+                options: [ 
+                    { src: 'gestos/deond.mp4', isCorrect: true },
+                    { src: 'gestos/soude.mp4', isCorrect: false },  
+                    { src: 'gestos/ten17.mp4', isCorrect: false } 
+                ] 
+            }, 
+             { 
+                type: 'input', 
+                question: 'O que esse sinal representa?', 
+                mediaSrc: 'gestos/nao.mp4', 
+                answer: 'não' 
+            }, 
+             { 
+                type: 'input', 
+                question: 'O que esse sinal representa?', 
+                mediaSrc: 'gestos/escola.mp4', 
+                answer: 'escola' 
+            }, 
+                 { 
+                type: 'input', 
+                question: 'O que esse sinal representa?', 
+                mediaSrc: 'gestos/comer.mp4', 
+                answer: 'comer' 
+            }, 
+            { 
+                type: 'input', 
+                question: 'Qual letra esse sinal representa?', 
+                mediaSrc: 'gestos/K.mp4', 
+                answer: 'k' 
+            }, 
+            { 
+                type: 'input', 
+                question: 'Qual letra esse sinal representa?', 
+                mediaSrc: 'gestos/h.mp4', 
+                answer: 'h' 
+            }, 
+            { 
+                type: 'order', 
+                question: 'Reordene as letras para a ordem alfabética!', 
+                items: 'abcdefghijklmnopqrstuvwxyz'.split('').map(letter => (letter <= 'e') ? `${letter}.jpeg` : `${letter}.jpg`) 
+            }
+        ];
+
+        // O restante do script permanece o mesmo
+        let currentQuestionIndex = 0; let score = 0; let errors = 0;
+        const quizContainer = document.getElementById('quiz-container'); const resultsContainer = document.getElementById('results-container'); const questionTitle = document.getElementById('question-title'); const questionContent = document.getElementById('question-content'); const progressBar = document.getElementById('progress');
+        
+        function renderQuestion() {
+            if (currentQuestionIndex >= quizData.length) {
+                showResults();
+                return;
+            }
+            const questionData = quizData[currentQuestionIndex];
+            questionTitle.textContent = questionData.question;
+            questionContent.innerHTML = '';
+            progressBar.style.width = `${((currentQuestionIndex) / quizData.length) * 100}%`;
+            
+            switch (questionData.type) {
+                case 'choice':
+                    renderChoiceQuestion(questionData);
+                    break;
+                case 'input':
+                    renderInputQuestion(questionData);
+                    break;
+                case 'order':
+                    renderOrderQuestion(questionData);
+                    break;
+            }
+        }
+
+        function renderChoiceQuestion(data) { const optionsContainer = document.createElement('div'); optionsContainer.className = 'video-options'; data.options.forEach(option => { const video = document.createElement('video'); video.src = option.src; video.autoplay = true; video.loop = true; video.muted = true; video.playsInline = true; video.addEventListener('click', () => { checkAnswer(option.isCorrect); }); optionsContainer.appendChild(video); }); questionContent.appendChild(optionsContainer); }
+        function renderInputQuestion(data) { questionContent.innerHTML = `<div class="input-question"><div class="media-container"><video src="${data.mediaSrc}" autoplay loop muted playsinline></video></div><form class="input-form"><input type="text" id="text-answer" maxlength="10" required /><button type="submit">Checar</button></form></div>`; document.querySelector('.input-form').addEventListener('submit', (e) => { e.preventDefault(); const userAnswer = document.getElementById('text-answer').value.trim().toLowerCase(); checkAnswer(userAnswer === data.answer); }); }
+        function renderOrderQuestion(data) { questionContent.innerHTML = `<div class="order-question"><div id="game"></div><button id="verify-order-btn">Verificar Ordem</button></div>`; const game = document.getElementById('game'); let currentOrder = [...data.items].sort(() => Math.random() - 0.5); let dragged; function renderDraggableItems() { game.innerHTML = ''; currentOrder.forEach(item => { const slot = document.createElement('div'); slot.className = 'slot'; const img = document.createElement('img'); img.src = `img/${item}`; img.id = item; img.draggable = true; img.addEventListener('dragstart', (e) => { dragged = e.target; }); slot.addEventListener('dragover', (e) => { e.preventDefault(); }); slot.addEventListener('drop', (e) => { e.preventDefault(); if (e.target.tagName === 'IMG') { [dragged.src, e.target.src] = [e.target.src, dragged.src]; [dragged.id, e.target.id] = [e.target.id, dragged.id]; } }); slot.appendChild(img); game.appendChild(slot); }); } renderDraggableItems(); document.getElementById('verify-order-btn').addEventListener('click', () => { const currentIds = Array.from(game.querySelectorAll('img')).map(img => img.id); checkAnswer(JSON.stringify(currentIds) === JSON.stringify(data.items)); }); }
+        function checkAnswer(isCorrect) { if (isCorrect) { score++; alert('Resposta Correta! ✅'); } else { errors++; alert('Resposta Incorreta. ❌'); } nextQuestion(); }
+        function nextQuestion() { currentQuestionIndex++; renderQuestion(); }
+        function showResults() { quizContainer.style.display = 'none'; resultsContainer.style.display = 'block'; progressBar.style.width = '100%'; document.getElementById('score-count').textContent = score; document.getElementById('error-count').textContent = errors; }
+        renderQuestion();
+    </script>
+</body>
+</html>

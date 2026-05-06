@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <link rel="shortcut icon" type="image/x-icon" href="img/icone.png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Librando - Aprender Libras</title>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+Tamma+2:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <div class="progress-bar">
+      <div class="progress">
+        <div class="reflexo"></div>
+      </div>
+    </div>
+
+    <div class="main-content">
+      <div class="character">
+        <img src="img/acerto.gif" alt="Lili" class="lili">
+        <div class="balloon">Isso mesmo!</div>
+      </div>
+
+      <div class="centralizar">
+        <h2 class="indique">Você indicou o sinal correto!</h2>
+        <div class="letter-card">
+          <video id="letterImage" src="gestos/teajudo.mp4" autoplay loop muted playsinline></video>
+        </div>
+        <p id="letterName" class="letter-name">"Pode me ajudar?"</p>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p class="question">
+        <span>COMO VOCÊ SE CHAMA?</span>
+        <button class="guide-btn" onclick="window.location.href='caminho.html'">Finalizar</button>
+      </p>
+    </div>
+  </div>
+</body>
+
+<style>
+  /* Reset e Estilos Base */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html, body {
+    height: 100%;
+    font-family: 'Baloo Tamma 2', cursive;
+    background-color: #fdfdfd;
+    color: #5a4d8a;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  /* Container Principal Flexbox */
+  .container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 30px;
+    gap: 15px;
+  }
+
+  /* Barra de progresso */
+  .progress-bar {
+    border: 2px solid #75429E;
+    width: 100%;
+    height: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    flex-shrink: 0;
+  }
+  .progress { width: 100%; height: 100%; background-color: #75429E; border-radius: 10px; }
+  .reflexo { width: 90%; height: 10%; background-color: #E9EBFF; border-radius: 10px; margin-left: 2.5%; }
+
+  /* Conteúdo Principal */
+  .main-content {
+    flex-grow: 1; /* Faz esta área crescer para ocupar o espaço livre */
+    position: relative; /* CRIA O CONTEXTO para o posicionamento absoluto da mascote */
+    display: flex; /* Mantemos o flex para centralizar o .centralizar */
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Mascote e Balão */
+  .character {
+    /* 1. POSICIONAMENTO ABSOLUTO */
+    position: absolute;
+    left: 5vw; /* Distância da esquerda (responsivo) */
+    top: 50%; /* Alinha o topo do elemento no meio da tela */
+    transform: translateY(-50%); /* Ajuste fino para centralizar verticalmente de fato */
+    z-index: 10; /* Garante que a mascote fique na frente se houver sobreposição */
+  }
+
+  .lili {
+    width: clamp(160px, 18vw, 240px);
+    height: auto;
+  }
+  
+  .balloon {
+    position: absolute;
+    top: 5%;
+    left: 80%;
+    background: #e5edff;
+    padding: 0.5rem 1rem;
+    border-radius: 10px;
+    color: #6758C2;
+    font-weight: bold;
+    border: 2px solid #c2d3ff;
+    white-space: nowrap;
+    font-size: clamp(1rem, 1.5vw, 1.3rem);
+  }
+  .balloon::after { content: ""; position: absolute; left: -10px; top: 50%; transform: translateY(-50%); border-style: solid; border-width: 8px 10px 8px 0; border-color: transparent #e5edff transparent transparent; }
+  .balloon::before { content: ""; position: absolute; left: -13px; top: 50%; transform: translateY(-50%); border-style: solid; border-width: 10px 12px 10px 0; border-color: transparent #c2d3ff transparent transparent; }
+
+  /* Conteúdo Centralizado */
+  .centralizar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  h2.indique { font-size: clamp(1.5rem, 2.2vw, 2rem); margin: 0; }
+  .letter-card video {
+    width: clamp(180px, 20vw, 250px);
+    height: clamp(180px, 20vw, 250px);
+    object-fit: cover;
+    border-radius: 18px;
+    border: 5px solid #6c3dbb;
+    box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
+  }
+  .letter-name { font-weight: bold; font-size: clamp(1.1rem, 1.6vw, 1.4rem); }
+
+  /* Rodapé */
+  .footer { width: 100%; flex-shrink: 0; }
+  .question {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: clamp(1rem, 1.8vw, 1.4rem);
+    color: #afa5d4d8;
+    font-weight: bold;
+  }
+  .guide-btn {
+    padding: 0.8rem 1.4rem; 
+    background: #6758C2;
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 3px 3px 0 #ccc;
+    font-weight: 700;
+    font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .guide-btn:hover { transform: translate(1px, 1px); box-shadow: 2px 2px 0 #ccc; }
+
+  /* Media Query para telas menores */
+  @media (max-width: 950px) {
+    .character {
+      display: none; /* Esconde a mascote em telas menores para não sobrepor o conteúdo */
+    }
+  }
+
+</style>
+</html>
