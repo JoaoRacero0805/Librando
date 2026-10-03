@@ -17,6 +17,10 @@ A atividade mais inovadora do Librando corrige o sinal que o próprio aluno faz 
 3. Esse vetor é comparado com o vetor do sinal esperado.
 4. Se os dois forem parecidos o bastante, a atividade marca o sinal como correto e dá o retorno na hora.
 
+<p align="center">
+  <img src="docs/screenshots/vetorizacao.png" alt="Atividade de câmera pedindo o sinal da letra A e mostrando o sinal identificado" width="720">
+</p>
+
 Assim o aluno não só reconhece os sinais, mas também pratica a produção deles, com correção automática. Essa atividade roda em um app próprio ([librando-tcc.vercel.app](https://librando-tcc.vercel.app/)), aberto a partir das lições 2 e 6. O código dela não está neste repositório.
 
 ## Telas
@@ -71,7 +75,9 @@ Assim o aluno não só reconhece os sinais, mas também pratica a produção del
 │   │   └── JsAtividadeR.js
 │   ├── img/                  # Imagens da Lili, letras do alfabeto e ícones
 │   └── gestos/               # Vídeos e fotos dos sinais
-├── docs/screenshots/         # Imagens usadas neste README
+├── docs/
+│   ├── LibrandoTCC.pdf       # Documentação completa do TCC
+│   └── screenshots/          # Imagens usadas neste README
 └── backend/                  # API REST
     ├── app.js                # Ponto de entrada (porta 3000)
     ├── db/index.js           # Conexão com o MongoDB
@@ -137,6 +143,10 @@ Entre 7 e 14 de outubro de 2025, a equipe abriu a plataforma para testes e colet
 - **76,2%** avaliaram como muito satisfatórias a página inicial e a trilha de lições
 - **75%** avaliaram como muito satisfatória a correção de sinais pela câmera
 
+<p align="center">
+  <img src="docs/screenshots/avaliacao-vetorizacao.png" alt="Gráfico: 75% muito boa, 15% boa e 10% mediana na avaliação da atividade de reconhecimento de sinais" width="640">
+</p>
+
 ### Próximos passos sugeridos pelos usuários
 
 - Deixar o site totalmente responsivo no celular
@@ -146,6 +156,8 @@ Entre 7 e 14 de outubro de 2025, a equipe abriu a plataforma para testes e colet
 - Corrigir o botão "Voltar", que leva para o login em vez da página anterior
 
 ## Equipe
+
+A documentação completa do projeto está em [docs/LibrandoTCC.pdf](docs/LibrandoTCC.pdf).
 
 Trabalho de Conclusão de Curso do Técnico em Desenvolvimento de Sistemas integrado ao Ensino Médio da **Etec Dr. Júlio Cardoso** (Centro Paula Souza).
 
