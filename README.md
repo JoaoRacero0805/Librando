@@ -6,6 +6,14 @@ Acesse: **[librandotcc.com.br](https://www.librandotcc.com.br/)**
 
 Projeto de TCC. Instagram: [@librando.tcc](https://www.instagram.com/librando.tcc)
 
+## Telas
+
+| Página inicial | Trilha de lições |
+| --- | --- |
+| ![Página inicial com a Lili e os botões de entrar](docs/screenshots/index.png) | ![Trilha do Módulo 1 com as lições e a ofensiva](docs/screenshots/caminho.png) |
+| **Guia da unidade** | **Lição** |
+| ![Guia da Unidade 1 com os sinais básicos](docs/screenshots/guia.png) | ![Lição mostrando a letra A do alfabeto manual](docs/screenshots/atividades.png) |
+
 ## Funcionalidades
 
 - Cadastro e login de usuários
@@ -49,6 +57,7 @@ Projeto de TCC. Instagram: [@librando.tcc](https://www.instagram.com/librando.tc
 │   │   └── JsAtividadeR.js
 │   ├── img/                  # Imagens da Lili, letras do alfabeto e ícones
 │   └── gestos/               # Vídeos e fotos dos sinais
+├── docs/screenshots/         # Imagens usadas neste README
 └── backend/                  # API REST
     ├── app.js                # Ponto de entrada (porta 3000)
     ├── db/index.js           # Conexão com o MongoDB
