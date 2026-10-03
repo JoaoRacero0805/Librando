@@ -2,6 +2,8 @@
 
 Aplicativo web para aprender **Libras** (Língua Brasileira de Sinais) de forma gamificada. O aluno segue uma trilha de lições guiada pela mascote **Lili**, assiste a vídeos dos sinais, resolve exercícios e quizzes, e acompanha o próprio progresso e a ofensiva (dias seguidos de estudo).
 
+Acesse: **[librandotcc.com.br](https://www.librandotcc.com.br/)**
+
 Projeto de TCC. Instagram: [@librando.tcc](https://www.instagram.com/librando.tcc)
 
 ## Funcionalidades
